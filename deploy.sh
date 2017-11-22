@@ -34,25 +34,25 @@ function install() {
   curl -s -X POST -H 'Content-Type: application/json' -d @ratings-designs.json $CLOUDANT_URL/$CLOUDANT_RATINGS_DATABASE/_bulk_docs | grep -v conflict
 
   echo "Creating $PACKAGE_NAME package"
-  wsk package create $PACKAGE_NAME\
+  bx wsk package create $PACKAGE_NAME\
     -p services.cloudant.url $CLOUDANT_URL\
     -p services.cloudant.questions $CLOUDANT_QUESTIONS_DATABASE\
     -p services.cloudant.ratings $CLOUDANT_RATINGS_DATABASE\
 
   echo "Creating actions"
-  wsk action create $PACKAGE_NAME/questionCreate\
+  bx wsk action create $PACKAGE_NAME/questionCreate\
     -a description 'Create a new question'\
     actions/question.create.js \
     --web true --annotation final true
-  wsk action create $PACKAGE_NAME/questionRead\
+  bx wsk action create $PACKAGE_NAME/questionRead\
     -a description 'Get a question'\
     actions/question.read.js \
     --web true --annotation final true
-  wsk action create $PACKAGE_NAME/questionStats\
+  bx wsk action create $PACKAGE_NAME/questionStats\
     -a description 'Get a question results'\
     actions/question.stats.js \
     --web true --annotation final true
-  wsk action create $PACKAGE_NAME/ratingCreate\
+  bx wsk action create $PACKAGE_NAME/ratingCreate\
     -a description 'Create a new rating'\
     actions/rating.create.js \
     --web true --annotation final true
@@ -60,24 +60,24 @@ function install() {
 
 function uninstall() {
   echo "Removing actions..."
-  wsk action delete $PACKAGE_NAME/ratingCreate
-  wsk action delete $PACKAGE_NAME/questionCreate
-  wsk action delete $PACKAGE_NAME/questionRead
-  wsk action delete $PACKAGE_NAME/questionStats
+  bx wsk action delete $PACKAGE_NAME/ratingCreate
+  bx wsk action delete $PACKAGE_NAME/questionCreate
+  bx wsk action delete $PACKAGE_NAME/questionRead
+  bx wsk action delete $PACKAGE_NAME/questionStats
 
   echo "Removing package..."
-  wsk package delete $PACKAGE_NAME
+  bx wsk package delete $PACKAGE_NAME
 
   echo "Done"
-  wsk list
+  bx wsk list
 }
 
 function update() {
   echo "Updating actions..."
-  wsk action update $PACKAGE_NAME/questionCreate    actions/question.create.js
-  wsk action update $PACKAGE_NAME/questionRead      actions/question.read.js
-  wsk action update $PACKAGE_NAME/questionStats     actions/question.stats.js
-  wsk action update $PACKAGE_NAME/ratingCreate      actions/rating.create.js
+  bx wsk action update $PACKAGE_NAME/questionCreate    actions/question.create.js
+  bx wsk action update $PACKAGE_NAME/questionRead      actions/question.read.js
+  bx wsk action update $PACKAGE_NAME/questionStats     actions/question.stats.js
+  bx wsk action update $PACKAGE_NAME/ratingCreate      actions/rating.create.js
 }
 
 function showenv() {
@@ -88,16 +88,16 @@ function showenv() {
 }
 
 function installApi() {
-  wsk api create /emoting/1 /questions       PUT     emoting/questionCreate --response-type json
-  wsk api create /emoting/1 /questions       GET     emoting/questionRead --response-type json
+  bx wsk api create /emoting/1 /questions       PUT     emoting/questionCreate --response-type json
+  bx wsk api create /emoting/1 /questions       GET     emoting/questionRead --response-type json
 
-  wsk api create /emoting/1 /stats           GET     emoting/questionStats --response-type json
+  bx wsk api create /emoting/1 /stats           GET     emoting/questionStats --response-type json
 
-  wsk api create /emoting/1 /ratings         PUT     emoting/ratingCreate --response-type json
+  bx wsk api create /emoting/1 /ratings         PUT     emoting/ratingCreate --response-type json
 }
 
 function uninstallApi() {
-  wsk api delete /emoting/1
+  bx wsk api delete /emoting/1
 }
 
 function recycle() {
