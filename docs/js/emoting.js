@@ -1,4 +1,4 @@
-const apiUrl = 'https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/388480043f19e383cc567b7ad13bac4d7af1c784a088f701ae9d6e355404e2b2/emoting/1';
+const apiUrl = 'https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/2a9acff49e223109225678db6e318dd4ce1faf7a950788f1e16bc9ac0f31dab5/emoting/1/questions'
 const ratingChoices = ['verygood', 'good', 'bad', 'verybad'];
 const emoting = {
   create(questionTitle) {
